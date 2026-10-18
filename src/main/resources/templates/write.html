@@ -12,7 +12,7 @@
             <h1>글쓰기</h1>
         </div>
 
-        <form class="post-form" id="post-form">
+        <form class="board-form" id="board-form">
             <div class="form-row">
                 <label for="title">제목</label>
                 <input type="text" id="title" name="title" placeholder="제목을 입력하세요">
@@ -32,7 +32,7 @@
             </div>
 
             <div class="form-actions">
-                <a class="btn" th:href="@{/}" href="index.html">취소</a>
+                <a class="btn" th:href="@{/board/list}" href="index.html">취소</a>
                 <button type="submit" class="btn btn-primary">등록</button>
             </div>
         </form>
@@ -41,7 +41,7 @@
 </main>
 
 <script>
-    $('#post-form').on('submit', function (e) {
+    $('#board-form').on('submit', function (e) {
         e.preventDefault();
 
         var $form = $(this);
@@ -52,7 +52,7 @@
         $submit.prop('disabled', true);
 
         $.ajax({
-            url: '/posts',
+            url: '/board',
             type: 'POST',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify({
@@ -61,7 +61,7 @@
                 content: $('#content').val()
             }),
             success: function () {
-                location.href = '/';
+                location.href = '/board/list';
             },
             error: function (xhr) {
                 if (xhr.status === 400 && xhr.responseJSON) {

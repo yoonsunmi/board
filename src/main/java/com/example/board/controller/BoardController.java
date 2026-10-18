@@ -1,0 +1,51 @@
+package com.example.board.controller;
+
+import com.example.board.dto.response.BoardResponse;
+import com.example.board.enums.ErrorCode;
+import com.example.board.exception.BoardException;
+import com.example.board.service.BoardService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@RequiredArgsConstructor
+@Controller
+@RequestMapping("/board")
+public class BoardController {
+
+	private final BoardService boardService;
+
+	private static final int PAGE_BUTTON_COUNT = 10;
+
+	/**
+	 * 게시판 목록 조회
+	 */
+	@GetMapping("/list")
+	public String list(
+			@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+			, Model model
+	) {
+		Page<BoardResponse> boardList = boardService.getList(pageable);
+
+		// 전체 페이지 보다 요청 페이지가 같거나 큰 경우
+		if(boardList.getTotalPages() > 0 && boardList.getNumber() >= boardList.getTotalPages()) {
+			throw new BoardException(ErrorCode.PAGE_NOT_FOUND);
+		}
+
+		int startPage = (boardList.getNumber() / PAGE_BUTTON_COUNT) * PAGE_BUTTON_COUNT;
+		int endPage = Math.min(startPage + (PAGE_BUTTON_COUNT - 1), boardList.getTotalPages() - 1);
+
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+
+		return "index";
+	}
+
+}

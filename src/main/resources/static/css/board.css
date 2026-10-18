@@ -61,7 +61,7 @@ a { color: inherit; text-decoration: none; }
 .pagination a.disabled { color: #ccc; pointer-events: none; }
 
 /* 글쓰기 폼 */
-.post-form { display: flex; flex-direction: column; gap: 20px; padding-top: 24px; border-top: 2px solid #222; }
+.board-form { display: flex; flex-direction: column; gap: 20px; padding-top: 24px; border-top: 2px solid #222; }
 .form-row { display: flex; flex-direction: column; gap: 6px; }
 .form-row label { font-size: 14px; font-weight: 600; }
 .form-row input,
@@ -76,6 +76,11 @@ a { color: inherit; text-decoration: none; }
 .field-error { font-size: 13px; color: #dc2626; }
 .field-error:empty { display: none; }
 .form-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+/* 에러 */
+.error-page { padding: 64px 32px; text-align: center; }
+.error-status { font-size: 48px; font-weight: 700; color: #2563eb; }
+.error-page h1 { margin: 8px 0 24px; font-size: 20px; }
 
 @media (max-width: 640px) {
     .board { padding: 20px 16px; }

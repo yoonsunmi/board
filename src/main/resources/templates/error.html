@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/common :: head('오류 - 게시판')}"></head>
+<body>
+
+<header th:replace="~{fragments/common :: header}"></header>
+
+<main class="container">
+    <section class="board error-page">
+        <p class="error-status" th:text="${status}">404</p>
+        <h1 th:text="${message} ?: '요청을 처리할 수 없습니다.'">존재하지 않는 페이지입니다.</h1>
+        <a class="btn btn-primary" th:href="@{/board/list}" href="index.html">목록으로</a>
+    </section>
+</main>
+
+</body>
+</html>
