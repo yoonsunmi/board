@@ -77,6 +77,15 @@ a { color: inherit; text-decoration: none; }
 .field-error:empty { display: none; }
 .form-actions { display: flex; justify-content: flex-end; gap: 8px; }
 
+/* 상세 */
+.detail-head { padding: 20px 0 16px; border-top: 2px solid #222; border-bottom: 1px solid #e5e7eb; }
+.detail-head h1 { font-size: 22px; word-break: break-all; }
+.detail-meta { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-top: 8px; font-size: 14px; color: #666; }
+.detail-meta div { display: flex; gap: 6px; }
+.detail-meta dt { font-weight: 600; }
+.detail-content { min-height: 200px; padding: 24px 0; line-height: 1.7; white-space: pre-wrap; word-break: break-all; border-bottom: 1px solid #e5e7eb; }
+.detail-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
 /* 에러 */
 .error-page { padding: 64px 32px; text-align: center; }
 .error-status { font-size: 48px; font-weight: 700; color: #2563eb; }

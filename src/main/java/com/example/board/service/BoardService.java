@@ -1,6 +1,8 @@
 package com.example.board.service;
 
 import com.example.board.entity.Board;
+import com.example.board.enums.ErrorCode;
+import com.example.board.exception.BoardException;
 import com.example.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +24,11 @@ public class BoardService {
     @Transactional
     public Long create(Board board) {
         return boardRepository.save(board).getId();
+    }
+
+    public Board getDetail(Long id) {
+        return boardRepository.findById(id)
+                .orElseThrow(() -> new BoardException(ErrorCode.BOARD_NOT_FOUND));
     }
 
 }

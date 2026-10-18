@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/common :: head(|${board.title} - 게시판|)}"></head>
+<body>
+
+<header th:replace="~{fragments/common :: header}"></header>
+
+<main class="container">
+    <section class="board">
+
+        <div class="detail-head">
+            <h1 th:text="${board.title}">게시글 제목입니다.</h1>
+            <dl class="detail-meta">
+                <div>
+                    <dt>작성자</dt>
+                    <dd th:text="${board.writer}">홍길동</dd>
+                </div>
+                <div>
+                    <dt>작성일</dt>
+                    <dd th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}">2026-10-18 12:00</dd>
+                </div>
+                <div>
+                    <dt>수정일</dt>
+                    <dd th:text="${#temporals.format(board.modifiedAt, 'yyyy-MM-dd HH:mm')}">2026-10-18 12:00</dd>
+                </div>
+            </dl>
+        </div>
+
+        <div class="detail-content" th:text="${board.content}">게시글 내용입니다.</div>
+
+        <div class="detail-actions">
+            <a class="btn" th:href="@{/board/list}" href="index.html">목록</a>
+            <a class="btn" th:href="@{/board/{id}/edit(id=${board.id})}" href="#">수정</a>
+            <button type="button" class="btn btn-danger" data-action="delete"
+                    th:data-url="@{/board/{id}(id=${board.id})}">삭제</button>
+        </div>
+
+    </section>
+</main>
+
+<script>
+    $(document).on('click', '[data-action="delete"]', function () {
+        if (!confirm('삭제하시겠습니까?')) return;
+
+        $.ajax({
+            url: $(this).data('url'),
+            type: 'DELETE',
+            success: function () {
+                location.href = '/board/list';
+            },
+            error: function () {
+                alert('삭제 실패');
+            }
+        });
+    });
+</script>
+</body>
+</html>
