@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">게시판</title>
+    <link rel="stylesheet" th:href="@{/css/board.css}" href="../../static/css/board.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<header class="site-header" th:fragment="header">
+    <div class="container">
+        <a class="logo" th:href="@{/}" href="../index.html">게시판</a>
+    </div>
+</header>
+
+</body>
+</html>

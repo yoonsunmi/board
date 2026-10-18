@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/common :: head('글쓰기 - 게시판')}"></head>
+<body>
+
+<header th:replace="~{fragments/common :: header}"></header>
+
+<main class="container">
+    <section class="board">
+
+        <div class="board-head">
+            <h1>글쓰기</h1>
+        </div>
+
+        <form class="post-form" id="post-form">
+            <div class="form-row">
+                <label for="title">제목</label>
+                <input type="text" id="title" name="title" placeholder="제목을 입력하세요">
+                <p class="field-error"></p>
+            </div>
+
+            <div class="form-row">
+                <label for="writer">작성자</label>
+                <input type="text" id="writer" name="writer" placeholder="작성자를 입력하세요">
+                <p class="field-error"></p>
+            </div>
+
+            <div class="form-row">
+                <label for="content">내용</label>
+                <textarea id="content" name="content" placeholder="내용을 입력하세요"></textarea>
+                <p class="field-error"></p>
+            </div>
+
+            <div class="form-actions">
+                <a class="btn" th:href="@{/}" href="index.html">취소</a>
+                <button type="submit" class="btn btn-primary">등록</button>
+            </div>
+        </form>
+
+    </section>
+</main>
+
+<script>
+    $('#post-form').on('submit', function (e) {
+        e.preventDefault();
+
+        var $form = $(this);
+        var $submit = $form.find('button[type="submit"]');
+
+        $form.find('.is-invalid').removeClass('is-invalid');
+        $form.find('.field-error').text('');
+        $submit.prop('disabled', true);
+
+        $.ajax({
+            url: '/posts',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                title: $('#title').val(),
+                writer: $('#writer').val(),
+                content: $('#content').val()
+            }),
+            success: function () {
+                location.href = '/';
+            },
+            error: function (xhr) {
+                if (xhr.status === 400 && xhr.responseJSON) {
+                    $.each(xhr.responseJSON, function (field, message) {
+                        $('#' + field).addClass('is-invalid').next('.field-error').text(message);
+                    });
+                    return;
+                }
+                alert('등록 실패');
+            },
+            complete: function () {
+                $submit.prop('disabled', false);
+            }
+        });
+    });
+</script>
+</body>
+</html>
