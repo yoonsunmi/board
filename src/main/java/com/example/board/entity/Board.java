@@ -2,6 +2,7 @@ package com.example.board.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,5 +23,12 @@ public class Board {
 
     @Column(nullable = false, length = 10000)
     private String content;
+
+    @Builder
+    public Board(String title, String writer, String content) {
+        this.title = title;
+        this.writer = writer;
+        this.content = content;
+    }
 
 }

@@ -1,6 +1,6 @@
 package com.example.board.service;
 
-import com.example.board.dto.response.BoardResponse;
+import com.example.board.entity.Board;
 import com.example.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,9 +15,13 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    public Page<BoardResponse> getList(Pageable pageable) {
-        return boardRepository.findAll(pageable)
-                .map(BoardResponse::from);
+    public Page<Board> getList(Pageable pageable) {
+        return boardRepository.findAll(pageable);
+    }
+
+    @Transactional
+    public Long create(Board board) {
+        return boardRepository.save(board).getId();
     }
 
 }

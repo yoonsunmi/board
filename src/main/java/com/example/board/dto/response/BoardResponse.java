@@ -12,6 +12,7 @@ public class BoardResponse {
     private final String writer;
     private final String content;
 
+    // entity -> dto
     public static BoardResponse from(Board board) {
         return new BoardResponse(board.getId(), board.getTitle(), board.getWriter(), board.getContent());
     }

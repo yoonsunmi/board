@@ -52,7 +52,7 @@
         $submit.prop('disabled', true);
 
         $.ajax({
-            url: '/board',
+            url: '/board/write',
             type: 'POST',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify({

@@ -1,17 +1,22 @@
 package com.example.board.controller;
 
+import com.example.board.dto.request.BoardRequest;
 import com.example.board.dto.response.BoardResponse;
 import com.example.board.enums.ErrorCode;
 import com.example.board.exception.BoardException;
 import com.example.board.service.BoardService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
@@ -31,7 +36,7 @@ public class BoardController {
 			@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
 			, Model model
 	) {
-		Page<BoardResponse> boardList = boardService.getList(pageable);
+		Page<BoardResponse> boardList = boardService.getList(pageable).map(BoardResponse::from);
 
 		// 전체 페이지 보다 요청 페이지가 같거나 큰 경우
 		if(boardList.getTotalPages() > 0 && boardList.getNumber() >= boardList.getTotalPages()) {
@@ -47,5 +52,24 @@ public class BoardController {
 
 		return "index";
 	}
+
+	/**
+	 * 게시글 작성 화면
+	 */
+	@GetMapping("/write")
+	public String writeForm() {
+		return "write";
+	}
+
+	/**
+	 * 게시글 작성
+	 */
+	@PostMapping("/write")
+	public ResponseEntity<Long> write(@RequestBody @Valid BoardRequest boardRequest) {
+		Long result = boardService.create(boardRequest.toEntity());
+
+		return ResponseEntity.ok(result);
+	}
+
 
 }
