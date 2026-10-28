@@ -43,4 +43,10 @@ public class BoardService {
         board.update(title, writer, content);
     }
 
+    @Transactional
+    public void delete(Long id) {
+        Board board = getDetail(id);
+        boardRepository.delete(board);
+    }
+
 }

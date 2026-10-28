@@ -69,10 +69,11 @@
             url: $(this).data('url'),
             type: 'DELETE',
             success: function () {
-                location.reload();
+                alert('삭제되었습니다.');
+                location.href = '/board/list';
             },
             error: function () {
-                alert('삭제 실패');
+                alert('삭제에 실패했습니다.');
             }
         });
     });

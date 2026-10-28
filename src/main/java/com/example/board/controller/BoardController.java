@@ -98,4 +98,14 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 게시글 삭제
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        boardService.delete(id);
+
+        return ResponseEntity.ok().build();
+    }
+
 }

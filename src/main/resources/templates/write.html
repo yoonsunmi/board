@@ -61,6 +61,7 @@
                 content: $('#content').val()
             }),
             success: function () {
+                alert('등록되었습니다.');
                 location.href = '/board/list';
             },
             error: function (xhr) {
@@ -70,7 +71,7 @@
                     });
                     return;
                 }
-                alert('등록 실패');
+                alert('등록에 실패했습니다.');
             },
             complete: function () {
                 $submit.prop('disabled', false);
