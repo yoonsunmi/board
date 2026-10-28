@@ -22,13 +22,25 @@ public class BoardService {
     }
 
     @Transactional
-    public Long create(Board board) {
+    public Long create(String title, String writer, String content) {
+        Board board = Board.builder()
+                .title(title)
+                .writer(writer)
+                .content(content)
+                .build();
+
         return boardRepository.save(board).getId();
     }
 
     public Board getDetail(Long id) {
         return boardRepository.findById(id)
                 .orElseThrow(() -> new BoardException(ErrorCode.BOARD_NOT_FOUND));
+    }
+
+    @Transactional
+    public void update(Long id, String title, String writer, String content) {
+        Board board = getDetail(id);
+        board.update(title, writer, content);
     }
 
 }

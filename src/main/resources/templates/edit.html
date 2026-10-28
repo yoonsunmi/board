@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/common :: head('글수정 - 게시판')}"></head>
+<body>
+
+<header th:replace="~{fragments/common :: header}"></header>
+
+<main class="container">
+    <section class="board">
+
+        <div class="board-head">
+            <h1>글수정</h1>
+        </div>
+
+        <form class="board-form" id="board-form" th:data-url="@{/board/{id}(id=${board.id})}">
+            <div class="form-row">
+                <label for="title">제목</label>
+                <input type="text" id="title" name="title" placeholder="제목을 입력하세요" th:value="${board.title}">
+                <p class="field-error"></p>
+            </div>
+
+            <div class="form-row">
+                <label for="writer">작성자</label>
+                <input type="text" id="writer" name="writer" placeholder="작성자를 입력하세요" th:value="${board.writer}">
+                <p class="field-error"></p>
+            </div>
+
+            <div class="form-row">
+                <label for="content">내용</label>
+                <textarea id="content" name="content" placeholder="내용을 입력하세요" th:text="${board.content}"></textarea>
+                <p class="field-error"></p>
+            </div>
+
+            <div class="form-actions">
+                <a class="btn" th:href="@{/board/{id}(id=${board.id})}" href="detail.html">취소</a>
+                <button type="submit" class="btn btn-primary">수정</button>
+            </div>
+        </form>
+
+    </section>
+</main>
+
+<script>
+    $('#board-form').on('submit', function (e) {
+        e.preventDefault();
+
+        var $form = $(this);
+        var $submit = $form.find('button[type="submit"]');
+        var url = $form.data('url');
+
+        $form.find('.is-invalid').removeClass('is-invalid');
+        $form.find('.field-error').text('');
+        $submit.prop('disabled', true);
+
+        $.ajax({
+            url: url,
+            type: 'PUT',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                title: $('#title').val(),
+                writer: $('#writer').val(),
+                content: $('#content').val()
+            }),
+            success: function () {
+                location.href = url;
+            },
+            error: function (xhr) {
+                if (xhr.status === 400 && xhr.responseJSON) {
+                    $.each(xhr.responseJSON, function (field, message) {
+                        $('#' + field).addClass('is-invalid').next('.field-error').text(message);
+                    });
+                    return;
+                }
+                alert('수정 실패');
+            },
+            complete: function () {
+                $submit.prop('disabled', false);
+            }
+        });
+    });
+</script>
+</body>
+</html>
