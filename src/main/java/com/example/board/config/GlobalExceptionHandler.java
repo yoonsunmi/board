@@ -14,26 +14,26 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(BoardException.class)
-	public ModelAndView handleBoardException(BoardException e) {
-		ErrorCode errorCode = e.getErrorCode();
+    @ExceptionHandler(BoardException.class)
+    public ModelAndView handleBoardException(BoardException e) {
+        ErrorCode errorCode = e.getErrorCode();
 
-		ModelAndView mav = new ModelAndView("error");
+        ModelAndView mav = new ModelAndView("error");
 
-		mav.setStatus(errorCode.getStatus());
-		mav.addObject("status", errorCode.getStatus().value());
-		mav.addObject("message", errorCode.getMessage());
+        mav.setStatus(errorCode.getStatus());
+        mav.addObject("status", errorCode.getStatus().value());
+        mav.addObject("message", errorCode.getMessage());
 
-		return mav;
-	}
+        return mav;
+    }
 
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<Map<String, String>> handleValidationException(MethodArgumentNotValidException e) {
-		Map<String, String> errors = new HashMap<>();
-		e.getBindingResult().getFieldErrors()
-				.forEach(error -> errors.putIfAbsent(error.getField(), error.getDefaultMessage()));
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationException(MethodArgumentNotValidException e) {
+        Map<String, String> errors = new HashMap<>();
+        e.getBindingResult().getFieldErrors()
+                .forEach(error -> errors.putIfAbsent(error.getField(), error.getDefaultMessage()));
 
-		return ResponseEntity.badRequest().body(errors);
-	}
+        return ResponseEntity.badRequest().body(errors);
+    }
 
 }
