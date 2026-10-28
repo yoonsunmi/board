@@ -12,7 +12,8 @@
             <h1>글수정</h1>
         </div>
 
-        <form class="board-form" id="board-form" th:data-url="@{/board/{id}(id=${board.id})}">
+        <form class="board-form" id="board-form" th:data-url="@{/board/{id}(id=${board.id})}"
+              th:data-redirect-url="@{/board/{id}(id=${board.id})}">
             <div class="form-row">
                 <label for="title">제목</label>
                 <input type="text" id="title" name="title" placeholder="제목을 입력하세요" th:value="${board.title}">
@@ -46,14 +47,13 @@
 
         var $form = $(this);
         var $submit = $form.find('button[type="submit"]');
-        var url = $form.data('url');
 
         $form.find('.is-invalid').removeClass('is-invalid');
         $form.find('.field-error').text('');
         $submit.prop('disabled', true);
 
         $.ajax({
-            url: url,
+            url: $form.data('url'),
             type: 'PUT',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify({
@@ -63,7 +63,7 @@
             }),
             success: function () {
                 alert('수정되었습니다.');
-                location.href = url;
+                location.href = $form.data('redirect-url');
             },
             error: function (xhr) {
                 if (xhr.status === 400 && xhr.responseJSON) {

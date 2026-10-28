@@ -32,7 +32,8 @@
             <a class="btn" th:href="@{/board/list}" href="index.html">목록</a>
             <a class="btn" th:href="@{/board/{id}/edit(id=${board.id})}">수정</a>
             <button type="button" class="btn btn-danger" data-action="delete"
-                    th:data-url="@{/board/{id}(id=${board.id})}">삭제</button>
+                    th:data-url="@{/board/{id}(id=${board.id})}"
+                    th:data-redirect-url="@{/board/list}">삭제</button>
         </div>
 
     </section>
@@ -42,12 +43,14 @@
     $(document).on('click', '[data-action="delete"]', function () {
         if (!confirm('삭제하시겠습니까?')) return;
 
+        var $button = $(this);
+
         $.ajax({
-            url: $(this).data('url'),
+            url: $button.data('url'),
             type: 'DELETE',
             success: function () {
                 alert('삭제되었습니다.');
-                location.href = '/board/list';
+                location.href = $button.data('redirect-url');
             },
             error: function () {
                 alert('삭제에 실패했습니다.');

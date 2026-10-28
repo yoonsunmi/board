@@ -12,7 +12,8 @@
             <h1>글쓰기</h1>
         </div>
 
-        <form class="board-form" id="board-form">
+        <form class="board-form" id="board-form" th:data-url="@{/board}"
+              th:data-redirect-url="@{/board/list}">
             <div class="form-row">
                 <label for="title">제목</label>
                 <input type="text" id="title" name="title" placeholder="제목을 입력하세요">
@@ -52,7 +53,7 @@
         $submit.prop('disabled', true);
 
         $.ajax({
-            url: '/board/write',
+            url: $form.data('url'),
             type: 'POST',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify({
@@ -62,7 +63,7 @@
             }),
             success: function () {
                 alert('등록되었습니다.');
-                location.href = '/board/list';
+                location.href = $form.data('redirect-url');
             },
             error: function (xhr) {
                 if (xhr.status === 400 && xhr.responseJSON) {

@@ -51,7 +51,7 @@ public class BoardController {
     }
 
     /**
-     * 게시글 작성 화면
+     * 게시글 등록 화면
      */
     @GetMapping("/write")
     public String writeForm() {
@@ -59,10 +59,10 @@ public class BoardController {
     }
 
     /**
-     * 게시글 작성
+     * 게시글 등록
      */
-    @PostMapping("/write")
-    public ResponseEntity<Long> write(@RequestBody @Valid BoardRequest boardRequest) {
+    @PostMapping
+    public ResponseEntity<Long> create(@RequestBody @Valid BoardRequest boardRequest) {
         Long result = boardService.create(boardRequest.getTitle(), boardRequest.getWriter(), boardRequest.getContent());
 
         return ResponseEntity.ok(result);
