@@ -35,8 +35,8 @@ public class BoardController {
     ) {
         Page<BoardResponse> boardList = boardService.getList(pageable).map(BoardResponse::from);
 
-        // 전체 페이지 보다 요청 페이지가 같거나 큰 경우
-        if (boardList.getTotalPages() > 0 && boardList.getNumber() >= boardList.getTotalPages()) {
+        // 첫 페이지가 아니면서 전체 페이지 보다 요청 페이지가 같거나 큰 경우
+        if (boardList.getNumber() > 0 && boardList.getNumber() >= boardList.getTotalPages()) {
             throw new BoardException(ErrorCode.PAGE_NOT_FOUND);
         }
 
