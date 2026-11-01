@@ -68,6 +68,8 @@
 
         var $button = $(this);
 
+        $button.prop('disabled', true);
+
         $.ajax({
             url: $button.data('url'),
             type: 'DELETE',
@@ -77,6 +79,9 @@
             },
             error: function () {
                 alert('삭제에 실패했습니다.');
+            },
+            complete: function () {
+                $button.prop('disabled', false);
             }
         });
     });
