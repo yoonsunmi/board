@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/board")
 public class BoardController {
 
     private final BoardService boardService;
@@ -28,7 +27,7 @@ public class BoardController {
     /**
      * 게시판 목록 조회
      */
-    @GetMapping("/list")
+    @GetMapping({"/", "/board/list"})
     public String list(
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
             , Model model
@@ -53,7 +52,7 @@ public class BoardController {
     /**
      * 게시글 등록 화면
      */
-    @GetMapping("/write")
+    @GetMapping("/board/write")
     public String writeForm() {
         return "write";
     }
@@ -61,7 +60,7 @@ public class BoardController {
     /**
      * 게시글 등록
      */
-    @PostMapping
+    @PostMapping("/board")
     public ResponseEntity<Long> create(@RequestBody @Valid BoardRequest boardRequest) {
         Long result = boardService.create(boardRequest.getTitle(), boardRequest.getWriter(), boardRequest.getContent());
 
@@ -71,7 +70,7 @@ public class BoardController {
     /**
      * 게시글 상세 조회
      */
-    @GetMapping("/{id}")
+    @GetMapping("/board/{id}")
     public String detail(@PathVariable Long id, Model model) {
         model.addAttribute("board", BoardResponse.from(boardService.getDetail(id)));
 
@@ -81,7 +80,7 @@ public class BoardController {
     /**
      * 게시글 수정 화면
      */
-    @GetMapping("/{id}/edit")
+    @GetMapping("/board/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("board", BoardResponse.from(boardService.getDetail(id)));
 
@@ -91,7 +90,7 @@ public class BoardController {
     /**
      * 게시글 수정
      */
-    @PutMapping("/{id}")
+    @PutMapping("/board/{id}")
     public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody @Valid BoardRequest boardRequest) {
         boardService.update(id, boardRequest.getTitle(), boardRequest.getWriter(), boardRequest.getContent());
 
@@ -101,7 +100,7 @@ public class BoardController {
     /**
      * 게시글 삭제
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/board/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         boardService.delete(id);
 
