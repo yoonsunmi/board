@@ -35,9 +35,10 @@ JDK 21이 필요합니다.
 gradlew.bat bootRun
 ```
 
-실행 후 http://localhost:8080/board/list 에 접속합니다.
+실행 후 http://localhost:8080 에 접속합니다.
 
 > H2 in-memory DB에 `ddl-auto: create` 설정을 사용하므로 애플리케이션을 재시작하면 데이터가 초기화됩니다.
+> 실행 시 `data.sql`의 샘플 게시글 15개가 등록됩니다.
 
 ### 테스트
 
@@ -60,6 +61,7 @@ gradlew.bat bootRun
 
 | Method | URL | 설명 |
 | --- | --- | --- |
+| GET | `/` | 게시글 목록 (`/board/list`와 같은 화면) |
 | GET | `/board/list` | 게시글 목록 (`page`, `size` 쿼리 파라미터, `page`는 0부터 시작) |
 | GET | `/board/write` | 게시글 등록 화면 |
 | GET | `/board/{id}` | 게시글 상세 화면 |
@@ -139,6 +141,7 @@ src/main
 │       └── BoardService.java
 └── resources
     ├── application.yml
+    ├── data.sql                          # 샘플 게시글
     ├── static/css/board.css
     └── templates
         ├── fragments/common.html         # 공통 head, header
