@@ -1,0 +1,16 @@
+INSERT INTO board (title, writer, content, created_at, modified_at) VALUES
+('게시판 이용 안내', '관리자', '게시판 이용 안내입니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('첫 글 남겨요', '홍길동', '반갑습니다. 첫 글 남깁니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Spring Boot 공부 기록', '김철수', 'Spring Boot로 게시판을 만들어 보고 있습니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('JPA 변경 감지 정리', '이영희', '트랜잭션 안에서 엔티티 값을 바꾸면 커밋할 때 UPDATE가 실행됩니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('점심 메뉴 추천 받아요', '박민수', '회사 근처 점심 메뉴 추천 부탁드립니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Thymeleaf 문법 질문', '최지은', 'th:text와 th:utext의 차이가 궁금합니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('주말 등산 후기', '정우성', '주말에 북한산에 다녀왔습니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('jQuery Ajax 사용법', '한지민', '$.ajax로 JSON을 보내는 방법을 정리했습니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('책 추천합니다', '윤서준', '최근에 읽은 개발 서적을 추천합니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('H2 콘솔 접속 방법', '강하늘', 'JDBC URL에 jdbc:h2:mem:board를 입력하면 됩니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('오늘 날씨 좋네요', '송민지', '산책하기 좋은 날씨입니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('페이징 구현 질문', '임도현', 'Pageable로 페이징을 구현하는 방법이 궁금합니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('스터디원 모집', '오세훈', '주 1회 Spring 스터디원을 모집합니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Git 커밋 메시지 규칙', '서예진', 'feat, fix, refactor 같은 타입을 앞에 붙여서 작성합니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('오늘의 회고', '배수아', '오늘 배운 내용을 정리했습니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
