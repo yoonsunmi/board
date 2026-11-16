@@ -2,6 +2,7 @@ package com.example.board.config;
 
 import com.example.board.enums.ErrorCode;
 import com.example.board.exception.BoardException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,8 +21,12 @@ public class GlobalExceptionHandler {
 
         ModelAndView mav = new ModelAndView("error");
 
-        mav.setStatus(errorCode.getStatus());
-        mav.addObject("status", errorCode.getStatus().value());
+        HttpStatus status = switch (errorCode) {
+            case PAGE_NOT_FOUND, BOARD_NOT_FOUND -> HttpStatus.NOT_FOUND;
+        };
+
+        mav.setStatus(status);
+        mav.addObject("status", status.value());
         mav.addObject("message", errorCode.getMessage());
 
         return mav;
