@@ -23,7 +23,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="board : ${boardList}">
+            <tr th:each="board : ${boardList.content}">
                 <td class="muted hide-sm" th:text="${board.id}">1</td>
                 <td class="title">
                     <a th:href="@{/board/{id}(id=${board.id})}" th:text="${board.title}" href="#">게시글입니다.</a>
@@ -38,7 +38,7 @@
                     </div>
                 </td>
             </tr>
-            <tr th:if="${boardList == null or boardList.isEmpty()}">
+            <tr th:if="${boardList == null or boardList.content.isEmpty()}">
                 <td colspan="4" class="empty">등록된 게시글이 없습니다.</td>
             </tr>
             </tbody>
@@ -49,14 +49,14 @@
         </div>
 
         <nav class="pagination" th:if="${boardList != null and boardList.totalPages > 0}">
-            <a th:href="@{/board/list(page=${boardList.number - 1})}"
-               th:classappend="${boardList.first} ? 'disabled'" href="#">&lsaquo;</a>
+            <a th:href="@{/board/list(page=${boardList.page - 1})}"
+               th:classappend="${boardList.firstPage} ? 'disabled'" href="#">&lsaquo;</a>
             <a th:each="i : ${#numbers.sequence(startPage, endPage)}"
                th:href="@{/board/list(page=${i})}"
                th:text="${i + 1}"
-               th:class="${i == boardList.number} ? 'active'" href="#" class="active">1</a>
-            <a th:href="@{/board/list(page=${boardList.number + 1})}"
-               th:classappend="${boardList.last} ? 'disabled'" href="#">&rsaquo;</a>
+               th:class="${i == boardList.page} ? 'active'" href="#" class="active">1</a>
+            <a th:href="@{/board/list(page=${boardList.page + 1})}"
+               th:classappend="${boardList.lastPage} ? 'disabled'" href="#">&rsaquo;</a>
         </nav>
 
     </section>

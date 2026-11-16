@@ -1,16 +1,13 @@
 package com.example.board.controller;
 
+import com.example.board.dto.request.BoardPageRequest;
 import com.example.board.dto.request.BoardRequest;
-import com.example.board.dto.response.BoardResponse;
+import com.example.board.dto.response.BoardPageResponse;
 import com.example.board.enums.ErrorCode;
 import com.example.board.exception.BoardException;
 import com.example.board.service.BoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,17 +26,21 @@ public class BoardController {
      */
     @GetMapping({"/", "/board/list"})
     public String list(
-            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+            @ModelAttribute BoardPageRequest boardPageRequest
             , Model model
     ) {
-        Page<BoardResponse> boardList = boardService.getList(pageable).map(BoardResponse::from);
-
-        // 첫 페이지가 아니면서 전체 페이지 보다 요청 페이지가 같거나 큰 경우
-        if (boardList.getNumber() > 0 && boardList.getNumber() >= boardList.getTotalPages()) {
+        if (boardPageRequest.getPage() < 0 || boardPageRequest.getSize() < 1) {
             throw new BoardException(ErrorCode.PAGE_NOT_FOUND);
         }
 
-        int startPage = (boardList.getNumber() / PAGE_BUTTON_COUNT) * PAGE_BUTTON_COUNT;
+        BoardPageResponse boardList = boardService.getList(boardPageRequest.getPage(), boardPageRequest.getSize());
+
+        // 첫 페이지가 아니면서 전체 페이지 보다 요청 페이지가 같거나 큰 경우
+        if (boardList.getPage() > 0 && boardList.getPage() >= boardList.getTotalPages()) {
+            throw new BoardException(ErrorCode.PAGE_NOT_FOUND);
+        }
+
+        int startPage = (boardList.getPage() / PAGE_BUTTON_COUNT) * PAGE_BUTTON_COUNT;
         int endPage = Math.min(startPage + (PAGE_BUTTON_COUNT - 1), boardList.getTotalPages() - 1);
 
         model.addAttribute("boardList", boardList);
@@ -72,7 +73,7 @@ public class BoardController {
      */
     @GetMapping("/board/{id}")
     public String detail(@PathVariable Long id, Model model) {
-        model.addAttribute("board", BoardResponse.from(boardService.getDetail(id)));
+        model.addAttribute("board", boardService.getDetail(id));
 
         return "detail";
     }
@@ -82,7 +83,7 @@ public class BoardController {
      */
     @GetMapping("/board/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
-        model.addAttribute("board", BoardResponse.from(boardService.getDetail(id)));
+        model.addAttribute("board", boardService.getDetail(id));
 
         return "edit";
     }
