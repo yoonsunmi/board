@@ -3,8 +3,6 @@ package com.example.board.controller;
 import com.example.board.dto.request.BoardPageRequest;
 import com.example.board.dto.request.BoardRequest;
 import com.example.board.dto.response.BoardPageResponse;
-import com.example.board.enums.ErrorCode;
-import com.example.board.exception.BoardException;
 import com.example.board.service.BoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,16 +27,7 @@ public class BoardController {
             @ModelAttribute BoardPageRequest boardPageRequest
             , Model model
     ) {
-        if (boardPageRequest.getPage() < 0 || boardPageRequest.getSize() < 1) {
-            throw new BoardException(ErrorCode.PAGE_NOT_FOUND);
-        }
-
         BoardPageResponse boardList = boardService.getList(boardPageRequest.getPage(), boardPageRequest.getSize());
-
-        // 첫 페이지가 아니면서 전체 페이지 보다 요청 페이지가 같거나 큰 경우
-        if (boardList.getPage() > 0 && boardList.getPage() >= boardList.getTotalPages()) {
-            throw new BoardException(ErrorCode.PAGE_NOT_FOUND);
-        }
 
         int startPage = (boardList.getPage() / PAGE_BUTTON_COUNT) * PAGE_BUTTON_COUNT;
         int endPage = Math.min(startPage + (PAGE_BUTTON_COUNT - 1), boardList.getTotalPages() - 1);

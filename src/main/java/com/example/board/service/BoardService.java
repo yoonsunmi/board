@@ -21,7 +21,16 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     public BoardPageResponse getList(int page, int size) {
+        if (page < 0 || size < 1) {
+            throw new BoardException(ErrorCode.PAGE_NOT_FOUND);
+        }
+
         Page<Board> result = boardRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")));
+
+        // 첫 페이지가 아니면서 전체 페이지 보다 요청 페이지가 같거나 큰 경우
+        if (page > 0 && page >= result.getTotalPages()) {
+            throw new BoardException(ErrorCode.PAGE_NOT_FOUND);
+        }
 
         return BoardPageResponse.builder()
                 .content(result.getContent().stream().map(BoardResponse::from).toList())
