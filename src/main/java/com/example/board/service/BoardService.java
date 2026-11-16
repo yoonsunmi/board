@@ -5,13 +5,13 @@ import com.example.board.dto.response.BoardResponse;
 import com.example.board.entity.Board;
 import com.example.board.enums.ErrorCode;
 import com.example.board.exception.BoardException;
+import com.example.board.repository.BoardQueryRepository;
 import com.example.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -19,25 +19,31 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final BoardQueryRepository boardQueryRepository;
 
     public BoardPageResponse getList(int page, int size) {
         if (page < 0 || size < 1) {
             throw new BoardException(ErrorCode.PAGE_NOT_FOUND);
         }
 
-        Page<Board> result = boardRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")));
+        long totalCount = boardQueryRepository.count();
+        int totalPages = (int) Math.ceil((double) totalCount / size);
 
         // 첫 페이지가 아니면서 전체 페이지 보다 요청 페이지가 같거나 큰 경우
-        if (page > 0 && page >= result.getTotalPages()) {
+        if (page > 0 && page >= totalPages) {
             throw new BoardException(ErrorCode.PAGE_NOT_FOUND);
         }
 
+        List<BoardResponse> result = boardQueryRepository.findAll(page, size).stream()
+                .map(BoardResponse::from)
+                .toList();
+
         return BoardPageResponse.builder()
-                .content(result.getContent().stream().map(BoardResponse::from).toList())
-                .page(result.getNumber())
-                .totalPages(result.getTotalPages())
-                .firstPage(result.isFirst())
-                .lastPage(result.isLast())
+                .content(result)
+                .page(page)
+                .totalPages(totalPages)
+                .firstPage(page == 0)
+                .lastPage(page >= totalPages - 1)
                 .build();
     }
 
