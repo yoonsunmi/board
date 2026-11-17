@@ -1,3 +1,7 @@
+INSERT INTO board (title, writer, content, created_at, modified_at)
+SELECT CONCAT('테스트 게시글 ', X), '테스터', '페이징 확인용 게시글입니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+FROM SYSTEM_RANGE(1, 100);
+
 INSERT INTO board (title, writer, content, created_at, modified_at) VALUES
 ('게시판 이용 안내', '관리자', '게시판 이용 안내입니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('첫 글 남겨요', '홍길동', '반갑습니다. 첫 글 남깁니다.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
