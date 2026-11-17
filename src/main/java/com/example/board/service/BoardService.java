@@ -59,7 +59,10 @@ public class BoardService {
     }
 
     public BoardResponse getDetail(Long id) {
-        return BoardResponse.from(findBoard(id));
+        Board board = boardQueryRepository.findById(id)
+                .orElseThrow(() -> new BoardException(ErrorCode.BOARD_NOT_FOUND));
+
+        return BoardResponse.from(board);
     }
 
     @Transactional

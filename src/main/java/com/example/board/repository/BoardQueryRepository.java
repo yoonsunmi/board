@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.board.entity.QBoard.board;
 
@@ -30,6 +31,15 @@ public class BoardQueryRepository {
                 .fetchOne();
 
         return count == null ? 0 : count;
+    }
+
+    public Optional<Board> findById(Long id) {
+        Board result = jpaQueryFactory
+                .selectFrom(board)
+                .where(board.id.eq(id))
+                .fetchOne();
+
+        return Optional.ofNullable(result);
     }
 
 }
