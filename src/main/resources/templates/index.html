@@ -26,7 +26,7 @@
             <tr th:each="board : ${boardList.content}">
                 <td class="muted hide-sm" th:text="${board.id}">1</td>
                 <td class="title">
-                    <a th:href="@{/board/{id}(id=${board.id})}" th:text="${board.title}" href="#">게시글입니다.</a>
+                    <a th:href="@{/board/{id}(id=${board.id}, page=${boardList.page})}" th:text="${board.title}" href="#">게시글입니다.</a>
                 </td>
                 <td th:text="${board.writer}">홍길동</td>
                 <td>

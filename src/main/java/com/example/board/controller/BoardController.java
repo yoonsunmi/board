@@ -61,8 +61,9 @@ public class BoardController {
      * 게시글 상세 조회
      */
     @GetMapping("/board/{id}")
-    public String detail(@PathVariable Long id, Model model) {
+    public String detail(@PathVariable Long id, Model model, @RequestParam(defaultValue = "0") int page) {
         model.addAttribute("board", boardService.getDetail(id));
+        model.addAttribute("page", page);
 
         return "detail";
     }
